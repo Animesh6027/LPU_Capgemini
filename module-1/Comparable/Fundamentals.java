@@ -1,15 +1,98 @@
 /*
-Comparator: 
+Comparable
+	It is an interface present inside java.lang package
+	It was introduced in JDK 1.2
+	It is used to define natural sorting order of objects
+	It provides only one method → compareTo(Object o)
+	Sorting logic is written inside the same class
+	It allows only one sorting sequence
+	It is used when default sorting logic is required
+	It is mainly used with Collections.sort() and TreeSet / TreeMap
+	It modifies the original class
+	Example:
+	String, Integer, Float already implement Comparable
+
+Comparator
 	It is an interface present inside java.util package
 	It was introduced in JDK 1.2
 	It is used to define custom sorting order
-	It provide two methods:
-			compare(Object obj1, Object obj2) 
-			equals(Object obj)
+	It provides two methods
+		compare(Object o1, Object o2)
+		equals(Object obj)
 	Sorting logic is written in a separate class
-	It allows multiple sorting sequence
+	It allows multiple sorting sequences
 	It is used when class source code cannot be modified
-	It does not affect the original class structure
-	It is mainly used with collections.sort(), TreeSet, TreeMap 
+	It does not affect the original class
+	It is mainly used with Collections.sort(), TreeSet, TreeMap
 	Useful for sorting based on multiple fields
 */
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+class Students implements Comparable<Students>{
+	int id;
+	String name;
+	double marks;
+	public Students(int id, String name, double marks) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.marks = marks;
+	}
+	@Override
+	public String toString() {
+		return "Students [id=" + id + ", name=" + name + ", marks=" + marks + "]";
+	}
+	@Override
+	public int compareTo(Students s) {
+		return this.id - s.id;
+	}
+}
+
+class SortByNames implements Comparator<Students>{
+
+	@Override
+	public int compare(Students s1, Students s2) {
+		return s1.name.compareTo(s2.name);
+	}
+}
+
+class SortByMarks implements Comparator<Students>{
+
+	@Override
+	public int compare(Students s1, Students s2) {
+		return Double.compare(s1.marks, s2.marks);
+	}
+	
+}
+public class Fundamentals {
+	public static void main(String[] args) {
+		
+		List<Students> st = new ArrayList<Students>();
+		st.add(new Students(3, "Murali", 75.5));
+		st.add(new Students(4, "Aditya", 85.5));
+		st.add(new Students(1, "Vishnu", 80.5));
+		st.add(new Students(2, "Pramod", 90.5));
+		st.add(new Students(2, "Suraj", 55.5));
+		System.out.println(st);
+		Collections.sort(st);
+		System.out.println("\n--Sorted by id--");
+		for (Students s : st) {
+			System.out.println(s);
+		}
+		System.out.println("\n--Sorted by name--");
+		Collections.sort(st,new SortByNames());
+		for (Students s : st) {
+			System.out.println(s);
+		}
+		
+		System.out.println("\n--Sorted by marks--");
+		Collections.sort(st, new SortByMarks());
+		for (Students s : st) {
+			System.out.println(s);
+		}
+	}
+}
